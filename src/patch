@@ -159,6 +159,21 @@ git rm -rf .
 git checkout "$BASE" -- .gitignore composer.*
 git clean -fd
 
+# Ensure .gitignore is properly configured
+echo "Checking .gitignore for vendor/..."
+if ! grep -q "^[^#]*vendor/$" .gitignore; then
+    echo "vendor/ is not ignored in .gitignore. Adding it..."
+    # Ensure the file ends with a newline
+    if [ -s .gitignore ] && [ "$(tail -c1 .gitignore)" != "" ]; then
+        echo "" >> .gitignore
+    fi
+    echo "vendor/" >> .gitignore
+    echo "vendor/ has been added to .gitignore."
+else
+    echo "vendor/ is already ignored in .gitignore."
+fi
+
+
 # If a current version was requested then change vendor first
 if [ "$CURRENT_VERSION" ]; then
 	composer require --no-scripts --with-all-dependencies "$PACKAGE" "$CURRENT_VERSION"
@@ -173,6 +188,7 @@ done
 # Add everything but the modified Composer files
 git add .
 git reset composer.*
+git reset .gitignore
 git commit -m "Stage framework" --no-verify > /dev/null
 
 # Check for a specific requested version
@@ -202,11 +218,12 @@ done
 # Add everything but the modified Composer files
 git add .
 git reset composer.*
+git reset .gitignore
 git commit -m "Patch framework $FROMTO" --no-verify
 
 # Get rid of the now-corrupt Composer files
 rm composer.*
-
+set +e
 # Create the new branch from base
 git checkout -b tatter/patches "$BASE"
 
@@ -219,7 +236,7 @@ echo "************************************"
 echo ""
 
 # Attempt the merge
-set +e
+
 git cherry-pick tatter/scratch
 
 if [ $? -eq 0 ]; then

@@ -1,5 +1,9 @@
 # Tatter\Patches
-Automated project updates for CodeIgniter 4
+Automated project updates for CodeIgniter 4 with `vendor/` Folder
+
+for some reason one of my projects requires vendor folder not to be ignored. so this fork is just for that. Use the original package if you don't have the same reason.
+
+I haven't pulled request to the original package because I think it will change the original purpose of the package.
 
 [![](https://github.com/tattersoftware/codeigniter4-patches/workflows/Tests/badge.svg)](https://github.com/tattersoftware/codeigniter4-patches/actions/workflows/test.yml)
 
@@ -25,7 +29,7 @@ so requires both of those be installed and accessible in your `$PATH`. Additiona
 * The current branch is "clean" (no uncommitted changes or unstaged files)
 * Your project files are in their standard locations (**app/**, **public/**, **env**, **spark**)
 * You have no ignored files in **app/** or **public/** that the patch process would disrupt
-* The **vendor/** folder must be ignored for tracking on your Git repository
+* ~The **vendor/** folder must be ignored for tracking on your Git repository~
 
 ## Installation
 
