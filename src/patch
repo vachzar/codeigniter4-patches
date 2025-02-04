@@ -215,14 +215,16 @@ for ITEM in $ITEMS; do
 	cp -R "vendor/$PACKAGE/$ITEM" ./
 done
 
-# Add everything but the modified Composer files
+# Add everything but the modified Composer files & .gitignore
 git add .
 git reset composer.*
 git reset .gitignore
 git commit -m "Patch framework $FROMTO" --no-verify
 
-# Get rid of the now-corrupt Composer files
+# Get rid of the now-corrupt Composer files & .gitignore
 rm composer.*
+rm .gitignore
+git clean -fd
 set +e
 # Create the new branch from base
 git checkout -b tatter/patches "$BASE"
